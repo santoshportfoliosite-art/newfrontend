@@ -1,0 +1,133 @@
+/* ====== Public Pages (responsive) ====== */
+
+/* Section headings */
+.section-title {
+  font-weight: 800;
+  letter-spacing: .3px;
+  margin: 8px 0 12px;
+  position: relative;
+}
+.section-title::after {
+  content: "";
+  display: block;
+  width: 56px;
+  height: 3px;
+  margin-top: 8px;
+  background: linear-gradient(90deg, var(--brand), var(--accent));
+  border-radius: 999px;
+  opacity: .7;
+}
+
+/* Media frames inside cards (images, covers) */
+.media-frame {
+  width: 100%;
+  aspect-ratio: 16/10;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #0d1420;
+  border: 1px solid #1f2937;
+}
+.media-frame > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Stats / counters */
+.stat-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(17, 24, 39, .6);
+}
+
+/* Projects grid */
+.project-grid {
+  display: grid;
+  gap: var(--gap);
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+.project-card .title {
+  display: block;
+  font-weight: 700;
+  margin-top: 8px;
+}
+.project-card .url {
+  font-size: .85rem;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+/* Skills grid */
+.skill-grid {
+  display: grid;
+  gap: var(--gap);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+.skill-card .title {
+  display: block;
+  font-weight: 700;
+  margin-top: 8px;
+}
+
+/* Education list */
+.edu-list {
+  display: grid;
+  gap: var(--gap);
+}
+.edu-item {
+  display: grid;
+  grid-template-columns: 1.2fr 2fr auto;
+  gap: 12px;
+  align-items: center;
+}
+.edu-item .level { font-weight: 700; }
+.edu-item .school { color: var(--muted); }
+.edu-item .year { white-space: nowrap; }
+
+@media (max-width: 720px) {
+  .edu-item { grid-template-columns: 1fr; gap: 6px; }
+  .edu-item .year { justify-self: start; }
+}
+
+/* Contact blocks */
+.contact-grid {
+  display: grid;
+  gap: var(--gap);
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+.social-grid {
+  display: grid;
+  gap: var(--gap);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+/* Hero layout helpers (optional; Home sections already responsive via globals) */
+.hero {
+  display: grid;
+  gap: var(--gap);
+  grid-template-columns: 1.2fr .9fr;
+}
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; }
+}
+
+/* ContactMe form spacing */
+.contactme form .row {
+  display: grid;
+  gap: var(--gap);
+  grid-template-columns: 1fr 1fr;
+}
+@media (max-width: 680px) {
+  .contactme form .row { grid-template-columns: 1fr; }
+}
+
+/* Simple fade-in utility */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fadeUp .35s ease both; }

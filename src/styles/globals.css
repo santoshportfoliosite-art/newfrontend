@@ -1,0 +1,192 @@
+:root {
+  --bg: #0b0f14;
+  --panel: #111827;
+  --muted: #9ca3af;
+  --text: #e5e7eb;
+  --brand: #22d3ee;
+  --accent: #a78bfa;
+
+  --radius: 16px;
+  --gap: 16px;
+  --container-max: 1200px;
+}
+
+/* Base reset / layout */
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  background: linear-gradient(180deg, #0b0f14 0%, #0b0f14 60%, #0e1320 100%);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+img, video { max-width: 100%; height: auto; display: block; }
+a { color: inherit; text-decoration: none; }
+
+/* Fluid type scale */
+h1 { font-size: clamp(1.6rem, 2.5vw + 1rem, 2.4rem); margin: 6px 0; }
+h2 { font-size: clamp(1.3rem, 1.8vw + 1rem, 1.8rem); margin: 6px 0; }
+h3 { font-size: clamp(1.1rem, 1.2vw + 0.9rem, 1.4rem); margin: 6px 0; }
+p, label, input, textarea, button { font-size: clamp(0.95rem, 0.5vw + 0.8rem, 1rem); }
+
+/* Container */
+.container {
+  width: min(100% - clamp(16px, 4vw, 32px), var(--container-max));
+  margin-inline: auto;
+  padding-block: 20px;
+}
+
+/* Cards */
+.card {
+  background: color-mix(in srgb, var(--panel) 85%, transparent);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--brand);
+  color: #001018;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: transform .06s ease, box-shadow .2s ease, background .2s ease;
+  min-height: 44px; /* touch target */
+}
+.btn:hover { transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
+.btn.outline {
+  background: transparent;
+  color: var(--brand);
+  border: 1px solid var(--brand);
+}
+.btn.block { width: 100%; }
+.btn.small { padding: 8px 12px; min-height: 38px; }
+
+/* Focus visibility (accessibility) */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 10px;
+}
+
+/* Layout helpers */
+.row { display: flex; gap: var(--gap); flex-wrap: wrap; }
+.grid { display: grid; gap: var(--gap); }
+
+/* Responsive auto-fit grids */
+.grid-2 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.grid-3 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.grid-4 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+
+/* Forms */
+label { display: block; font-size: 0.95rem; color: var(--muted); margin-bottom: 6px; }
+input, textarea {
+  width: 100%;
+  background: #0d1420;
+  color: var(--text);
+  border: 1px solid #1f2937;
+  border-radius: 10px;
+  padding: 10px 12px;
+  min-height: 44px; /* touch friendly */
+}
+textarea { min-height: 120px; resize: vertical; }
+input::placeholder, textarea::placeholder { color: #64748b; }
+
+/* Navbar active */
+nav .active { color: var(--brand); }
+
+/* Header / navbar responsiveness without JS hamburger */
+header {
+  backdrop-filter: blur(8px);
+}
+header nav .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+header nav .container > div { min-width: 0; }
+/* middle links group behaves well on small screens */
+header nav .container > div:nth-child(2) {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+@media (max-width: 640px) {
+  header nav .container > div:nth-child(2) {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+  .navlink { white-space: nowrap; }
+}
+
+/* Utilities */
+.muted { color: var(--muted); }
+.hide { display: none !important; }
+.only-mobile { display: none; }
+.only-desktop { display: initial; }
+@media (max-width: 768px) {
+  .only-mobile { display: initial; }
+  .only-desktop { display: none; }
+}
+
+/* Make mixed two-column rows collapse nicely on small screens */
+@media (max-width: 900px) {
+  .row { flex-direction: column; }
+  .card { padding: 14px; }
+}
+
+/* Spacing & typography tweaks on very small screens */
+@media (max-width: 420px) {
+  :root { --gap: 12px; }
+  .container { padding-block: 14px; }
+  .btn { padding: 10px 14px; }
+}
+
+/* Smooth scrolling for horizontal nav areas on mobile */
+header nav .container > div:nth-child(2)::-webkit-scrollbar {
+  height: 6px;
+}
+header nav .container > div:nth-child(2)::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.15);
+  border-radius: 8px;
+}
+
+/* Visually hidden (for a11y) */
+.visually-hidden {
+  position: absolute !important;
+  height: 1px; width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap;
+}
+
+/* Links styled as nav items */
+.navlink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  transition: background .2s ease, color .2s ease;
+}
+.navlink:hover { background: rgba(255,255,255,0.06); }
+
+/* Tables in admin lists scale well */
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.06); text-align: left; }
