@@ -22,17 +22,20 @@ export function AuthProvider({ children }) {
 
   const login = async (email, password) => {
     const { data } = await api.post("/auth/login", { email, password });
-    // Save token in localStorage so axios can send it as Bearer
-    if (data?.data?.token) {
-      localStorage.setItem("token", data.data.token);
-    }
-    setUser(data?.data?.admin || null);
+    const admin = data?.data?.admin || null;
+    const token = data?.data?.token || null;
+
+    // Save token for cross-origin fallback (Bearer)
+    if (token) localStorage.setItem("token", token);
+
+    setUser(admin);
     return data;
   };
 
   const logout = async () => {
-    await api.post("/auth/logout");
-    localStorage.removeItem("token"); // remove from storage
+    // Clear both cookie session (if present) and localStorage token
+    localStorage.removeItem("token");
+    try { await api.post("/auth/logout"); } catch (_) {}
     setUser(null);
   };
 
