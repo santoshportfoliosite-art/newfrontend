@@ -44,7 +44,7 @@ export default function Login() {
           </div>
         </form>
         <p style={{ color: "var(--muted)", marginTop: 10 }}>
-          Messages: success / failed / incorrect password / incorrect email are shown via toast.
+          
         </p>
       </div>
     </section>
