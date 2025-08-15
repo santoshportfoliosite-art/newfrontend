@@ -22,12 +22,17 @@ export function AuthProvider({ children }) {
 
   const login = async (email, password) => {
     const { data } = await api.post("/auth/login", { email, password });
+    // Save token in localStorage so axios can send it as Bearer
+    if (data?.data?.token) {
+      localStorage.setItem("token", data.data.token);
+    }
     setUser(data?.data?.admin || null);
     return data;
   };
 
   const logout = async () => {
     await api.post("/auth/logout");
+    localStorage.removeItem("token"); // remove from storage
     setUser(null);
   };
 
