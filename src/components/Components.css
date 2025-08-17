@@ -1,7 +1,3 @@
-/* ===========================
-   Shared component styles
-   =========================== */
-
 /* --- Navbar --- */
 .navbar {
   position: sticky;
@@ -15,10 +11,17 @@
   width: min(100% - clamp(16px, 4vw, 32px), 1200px);
   margin-inline: auto;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  padding: 10px 0;
+  gap: 8px;
+}
+
+/* top row (brand + admin) */
+.nav-top {
+  display: flex;
   justify-content: space-between;
-  gap: 12px;
-  padding: 14px 0;
+  align-items: center;
+  width: 100%;
 }
 .brand {
   font-weight: 800;
@@ -27,20 +30,14 @@
   white-space: nowrap;
 }
 
-/* desktop links */
+/* nav links row */
 .nav-links {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 18px;
+  flex-wrap: wrap;
 }
-
-/* Admin/CTA area (right) */
-.nav-cta {
-  display: flex;
-  gap: 10px;
-}
-
-/* individual link */
 .navlink {
   display: inline-flex;
   align-items: center;
@@ -52,104 +49,18 @@
 }
 .navlink:hover { background: rgba(255,255,255,0.06); }
 nav .active { color: var(--brand); }
+.navlink .icon { font-size: 18px; }
 
-/* Hamburger button (mobile only) */
-.hamburger {
-  display: none;
-  width: 42px; height: 42px;
-  border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.12);
-  background: transparent;
-  align-items: center; justify-content: center;
-  cursor: pointer;
-}
-.hamburger:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.hamburger .bars {
-  position: relative; width: 20px; height: 2px; background: var(--text);
-  transition: background .2s ease;
-}
-.hamburger .bars::before,
-.hamburger .bars::after {
-  content: ""; position: absolute; left: 0; width: 20px; height: 2px; background: var(--text);
-  transition: transform .2s ease, top .2s ease, bottom .2s ease, opacity .2s ease;
-}
-.hamburger .bars::before { top: -6px; }
-.hamburger .bars::after  { bottom: -6px; }
-
-/* when open -> transform to X */
-.nav-open .hamburger .bars { background: transparent; }
-.nav-open .hamburger .bars::before { top: 0; transform: rotate(45deg); }
-.nav-open .hamburger .bars::after  { bottom: 0; transform: rotate(-45deg); }
-
-/* Mobile drawer */
-.mobile-menu {
-  display: none;
-}
-.mobile-menu-panel {
-  position: fixed;
-  inset: 64px 0 auto 0;   /* below navbar */
-  background: rgba(17, 24, 39, 0.98);
-  border-top: 1px solid rgba(255,255,255,0.06);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
-  padding: 14px 20px;
-}
-.mobile-menu-panel .group {
-  display: grid; gap: 10px;
-}
-.mobile-link {
-  display: inline-flex; align-items: center; gap: 10px;
-  padding: 12px; border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.06);
-  background: rgba(17,24,39,0.6);
+/* Admin button */
+.nav-cta {
+  display: flex;
+  gap: 10px;
 }
 
-/* --- Footer --- */
-.footer {
-  padding: 24px 0;
-  margin-top: 40px;
-  border-top: 1px solid rgba(255,255,255,0.06);
-}
-.footer-inner {
-  width: min(100% - clamp(16px, 4vw, 32px), 1200px);
-  margin-inline: auto;
-  display: flex; justify-content: space-between; align-items: center;
-}
-
-/* --- Modal (if you add className) --- */
-.modal-backdrop {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.6);
-  display: grid; place-items: center; z-index: 1000;
-}
-.modal-card {
-  width: min(720px, 92vw); max-height: 85vh; overflow: auto;
-  background: rgba(17, 24, 39, 0.9);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 16px; padding: 16px;
-}
-
-/* --- UploadImage (optional classes) --- */
-.upload-card { max-width: 480px; }
-.upload-actions { display: flex; gap: 10px; }
-
-/* --- ContactMe --- */
-.contactme .subtitle { color: var(--muted); margin-top: -2px; }
-.contactme form .row {
-  display: grid; gap: var(--gap);
-  grid-template-columns: 1fr 1fr;
-}
-@media (max-width: 680px) {
-  .contactme form .row { grid-template-columns: 1fr; }
-}
-
-/* --- Responsive rules --- */
+/* Responsive */
 @media (max-width: 960px) {
-  /* hide desktop links, show hamburger */
-  .nav-links { display: none; }
-  .hamburger { display: inline-flex; }
-  .mobile-menu { display: block; }
-}
-
-/* widen tap targets on small phones */
-@media (max-width: 420px) {
-  .nav-cta .btn { padding: 10px 12px; }
+  .navlink .label { display: none; }
+  .nav-links { gap: 14px; }
+  .navlink { padding: 10px; border-radius: 50%; }
+  .navlink .icon { font-size: 22px; }
 }
