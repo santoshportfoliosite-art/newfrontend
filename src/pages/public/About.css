@@ -1,0 +1,136 @@
+/* Main Container */
+.about-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem clamp(1rem, 5vw, 4rem);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Stars Background */
+.stars-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  animation: twinkle var(--duration) infinite ease-in-out;
+  opacity: 0;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0; transform: scale(0.5); }
+  50% { opacity: var(--opacity); transform: scale(1); }
+}
+
+/* Content Layout */
+.about-content {
+  display: flex;
+  align-items: center;
+  gap: 4rem;
+}
+
+.about-image-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.about-text-section {
+  flex: 1;
+}
+
+/* Image Style */
+.profile-image-wrapper {
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  padding: 6px;
+  position: relative;
+  animation: glow 4s infinite alternate;
+}
+
+@keyframes glow {
+  0% { box-shadow: 0 0 10px 2px rgba(59, 130, 246, 0.5); }
+  100% { box-shadow: 0 0 20px 8px rgba(59, 130, 246, 0.8); }
+}
+
+.profile-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Text Styling */
+.about-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(90deg, #fff, var(--brand));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.about-description {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1.1rem;
+  line-height: 1.8;
+  position: relative;
+}
+
+/* Responsive Layout */
+@media (max-width: 768px) {
+  .about-content {
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .profile-image-wrapper {
+    width: 250px;
+    height: 250px;
+  }
+  
+  .about-text-section {
+    text-align: center;
+  }
+}
+@media (max-width: 768px) {
+  .about-description {
+    text-align: justify;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+  }
+}
+.star {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.1; /* will be driven by --opacity via twinkle */
+  will-change: transform, opacity;
+  /* Two animations: twinkle and slow drift */
+  animation:
+    star-twinkle var(--duration, 3s) ease-in-out infinite alternate,
+    star-drift calc(var(--duration, 3s) * 6) linear infinite;
+  /* slight glow */
+  box-shadow: 0 0 6px currentColor;
+}
+.stars-container {
+  position: fixed;
+  inset: 0;             /* top/right/bottom/left: 0 */
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;           /* stars sit above background */
+  pointer-events: none; /* don't block clicks */
+  overflow: hidden;
+}

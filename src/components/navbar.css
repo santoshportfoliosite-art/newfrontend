@@ -1,0 +1,131 @@
+/* Navbar Container */
+.navbar {
+  position: sticky;
+  top: 0rem;
+  z-index: 50;
+  background: rgba(17, 24, 39, 0.9);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.navbar-inner {
+  width: min(100% - clamp(16px, 4vw, 32px), 1200px);
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0;
+  gap: 8px;
+}
+
+/* Brand */
+.brand {
+   
+    margin-left:2rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  user-select: none;
+  white-space: nowrap;
+  font-size: 1.25rem;
+  color: white;
+}
+
+.brand-highlight {
+  color: var(--brand);
+}
+
+/* Navigation Links */
+.nav-links {
+     position: sticky;
+  top: 0;
+  z-index: 50;
+ 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.navlink {
+
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.navlink:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+}
+
+.navlink.active {
+  color: var(--brand);
+}
+
+.navlink .icon {
+  font-size: 1.1rem;
+}
+
+.navlink .label {
+  transition: opacity 0.2s ease;
+}
+
+/* Admin Button */
+.nav-cta {
+  display: flex;
+  gap: 10px;
+}
+
+.admin-btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  color: white;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.admin-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .nav-cta {
+    display: none;
+  }
+
+  .navlink {
+    padding: 10px;
+    border-radius: 50%;
+  }
+
+  .navlink .label {
+    display: none;
+  }
+
+  .navlink .icon {
+    font-size: 1.2rem;
+  }
+}
+.nav-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .nav-links {
+    gap: 12px;
+  }
+}

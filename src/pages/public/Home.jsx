@@ -6,6 +6,7 @@ import ContactMe from "../../components/ContactMe.jsx";
 import "../../styles/globals.css";
 import "../../styles/Pages.css";
 import "../../styles/Admin.css";
+import "../../components/navbar.css";
 import {
   FaPhoneAlt,
   FaWhatsapp,

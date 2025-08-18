@@ -1,0 +1,152 @@
+/* Education Container */
+.education-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem clamp(1rem, 5vw, 4rem);
+  position: relative;
+  min-height: 100vh;
+  z-index: 2; /* content above particles */
+}
+
+/* Full-screen particles layer */
+.education-particles {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;       /* particles below content, above background */
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.education-particle {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(0.5px);
+  will-change: transform, opacity;
+  opacity: 0;
+  animation: edu-float 15s linear infinite;
+}
+
+/* Upward float path with gentle horizontal drift */
+@keyframes edu-float {
+  0% {
+    transform: translateY(110vh) translateX(0);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.85;
+  }
+  80% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateY(-20vh) translateX(var(--driftX, 20px));
+    opacity: 0;
+  }
+}
+
+/* Timeline Effect */
+.education-timeline {
+  position: relative;
+  margin: 3rem 0;
+  z-index: 2; /* ensure visible over particles */
+}
+
+.education-timeline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--brand), transparent);
+}
+
+/* Education Cards */
+.education-card {
+  background: rgba(17, 24, 39, 0.7);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.education-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--brand);
+  transition: width 0.3s ease;
+}
+
+.education-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.education-card:hover::before {
+  width: 8px;
+}
+
+.education-level {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: white;
+}
+
+.education-institution {
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 0.5rem;
+}
+
+.education-year {
+  background: rgba(59, 130, 246, 0.2);
+  color: var(--brand);
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-weight: 500;
+  display: inline-block;
+}
+
+/* Header Styles */
+.education-header {
+  margin-bottom: 2rem;
+  z-index: 2;
+  position: relative;
+}
+
+.education-title {
+  font-size: 2.5rem;
+  background: linear-gradient(90deg, #fff, var(--brand));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .education-timeline::before {
+    left: 1rem;
+    transform: none;
+  }
+  
+  .education-card {
+    margin-left: 2rem;
+  }
+  
+  .education-title {
+    font-size: 2rem;
+  }
+}

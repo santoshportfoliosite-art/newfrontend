@@ -1,4 +1,4 @@
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import {
   FaHome,
   FaUserAlt,
@@ -7,12 +7,11 @@ import {
   FaTools,
   FaGraduationCap,
 } from "react-icons/fa";
-import "./Components.css";
+import "./navbar.css";
 
-const linkCls = ({ isActive }) => "navlink" + (isActive ? " active" : "");
-
-export default function Navbar() {
-  const loc = useLocation();
+const Navbar = () => {
+  const isActiveLink = ({ isActive }) => 
+    `navlink ${isActive ? "active" : ""}`;
 
   return (
     <header className="navbar">
@@ -20,12 +19,13 @@ export default function Navbar() {
         {/* Top row: Brand + Admin */}
         <div className="nav-top">
           <div className="brand">
-            SANTOSH<span style={{ color: "var(--brand)" }}>&nbsp;THAPA</span>
+            SANTOSH<span className="brand-highlight"> THAPA</span>
           </div>
+          
           <div className="nav-cta">
             <NavLink
               to="/admin/login"
-              className="btn outline"
+              className="admin-btn"
               title="Admin Login"
             >
               Admin
@@ -33,29 +33,29 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Second row: Navigation links */}
+        {/* Navigation links */}
         <div className="nav-links" aria-label="Primary">
-          <NavLink to="/" className={linkCls}>
+          <NavLink to="/" className={isActiveLink}>
             <FaHome className="icon" />
             <span className="label">Home</span>
           </NavLink>
-          <NavLink to="/about" className={linkCls}>
+          <NavLink to="/about" className={isActiveLink}>
             <FaUserAlt className="icon" />
             <span className="label">About</span>
           </NavLink>
-          <NavLink to="/projects" className={linkCls}>
+          <NavLink to="/projects" className={isActiveLink}>
             <FaProjectDiagram className="icon" />
             <span className="label">Projects</span>
           </NavLink>
-          <NavLink to="/contact" className={linkCls}>
+          <NavLink to="/contact" className={isActiveLink}>
             <FaPhoneAlt className="icon" />
             <span className="label">Contact</span>
           </NavLink>
-          <NavLink to="/skills" className={linkCls}>
+          <NavLink to="/skills" className={isActiveLink}>
             <FaTools className="icon" />
             <span className="label">Skills</span>
           </NavLink>
-          <NavLink to="/education" className={linkCls}>
+          <NavLink to="/education" className={isActiveLink}>
             <FaGraduationCap className="icon" />
             <span className="label">Education</span>
           </NavLink>
@@ -63,4 +63,6 @@ export default function Navbar() {
       </nav>
     </header>
   );
-}
+};
+
+export default Navbar;
