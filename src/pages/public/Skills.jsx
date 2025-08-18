@@ -6,23 +6,61 @@ import "./Skills.css";
 export default function Skills() {
   const [items, setItems] = useState([]);
   const skillsRef = useRef(null);
-  
+  const particlesRef = useRef(null);
+
   useEffect(() => { 
     api.get("/skills").then(({data}) => setItems(data?.data || [])); 
   }, []);
 
+  /* Floating particles like your other pages (added) */
+  useEffect(() => {
+    const container = particlesRef.current;
+    if (!container) return;
+
+    const particleCount = 100;
+    container.innerHTML = "";
+
+    const colors = [
+      "#4facfe", "#00f2fe", "#ff4e50", "#f9d423",
+      "#a8ff78", "#78ffd6", "#f857a6", "#ff5858"
+    ];
+
+    for (let i = 0; i < particleCount; i++) {
+      const p = document.createElement("div");
+      p.className = "skills-particle";
+
+      // position across the width; let the keyframes move through viewport
+      p.style.left = `${Math.random() * 100}%`;
+      p.style.top = `0`;
+
+      const size = Math.random() * 3 + 1; // 1–4px
+      p.style.width = `${size}px`;
+      p.style.height = `${size}px`;
+
+      p.style.background = colors[Math.floor(Math.random() * colors.length)];
+      p.style.setProperty("--driftX", `${(Math.random() * 8 - 4).toFixed(2)}vw`);
+
+      p.style.animationDuration = `${(Math.random() * 10 + 10).toFixed(2)}s`;
+      p.style.animationDelay = `${(Math.random() * 3).toFixed(2)}s`;
+
+      container.appendChild(p);
+    }
+  }, []);
+
+  /* Reveal-in + progress bars */
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            
-            // Animate progress bars
-            const progressBar = entry.target.querySelector('.skill-progress-bar');
+            entry.target.classList.add("visible");
+
+            // Animate progress bars – respect provided data-level
+            const progressBar = entry.target.querySelector(".skill-progress-bar");
             if (progressBar) {
-              const level = entry.target.dataset.level || 80;
-              progressBar.style.width = `${level}%`;
+              const provided = entry.target.getAttribute("data-level");
+              const level = provided ? Number(provided) : Math.floor(Math.random() * 30) + 70;
+              progressBar.style.width = `${Math.max(0, Math.min(100, level))}%`;
             }
           }
         });
@@ -31,11 +69,13 @@ export default function Skills() {
     );
 
     if (skillsRef.current) {
-      const cards = skillsRef.current.querySelectorAll('.skill-card');
+      const cards = skillsRef.current.querySelectorAll(".skill-card");
       cards.forEach(card => {
+        // Only set demo level if none provided
+        if (!card.getAttribute("data-level")) {
+          card.setAttribute("data-level", String(Math.floor(Math.random() * 30) + 70));
+        }
         observer.observe(card);
-        // Add random level between 70-100% for demo
-        card.dataset.level = Math.floor(Math.random() * 30) + 70;
       });
     }
 
@@ -44,7 +84,10 @@ export default function Skills() {
 
   return (
     <section className="skills-container">
-      {/* Animated Background Elements */}
+      {/* Full-screen floating particles (new) */}
+      <div className="skills-particles" ref={particlesRef} />
+
+      {/* Animated Background Elements (kept) */}
       <div className="skills-bg-element"></div>
       <div className="skills-bg-element"></div>
       
@@ -73,7 +116,7 @@ export default function Skills() {
         ))}
       </div>
       
-      <ContactMe />
+    
     </section>
   );
 }

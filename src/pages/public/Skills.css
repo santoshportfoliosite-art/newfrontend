@@ -6,6 +6,41 @@
   position: relative;
   min-height: 100vh;
   overflow: hidden;
+  z-index: 2; /* ensure content sits above particles layer */
+}
+
+/* Full-screen floating particles (new) */
+.skills-particles {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;           /* below content, above page background */
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.skills-particle {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(0.5px);
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: skills-float 15s linear infinite;
+}
+
+/* Upward float with gentle horizontal drift */
+@keyframes skills-float {
+  0% {
+    transform: translateY(110vh) translateX(0);
+    opacity: 0;
+  }
+  20% { opacity: 0.85; }
+  80% { opacity: 0.85; }
+  100% {
+    transform: translateY(-20vh) translateX(var(--driftX, 20px));
+    opacity: 0;
+  }
 }
 
 /* Animated Background Elements */
@@ -14,7 +49,7 @@
   border-radius: 50%;
   filter: blur(60px);
   opacity: 0.15;
-  z-index: -1;
+  z-index: -1; /* keep these behind the section, particles are separate */
   animation: float 15s ease-in-out infinite;
 }
 
@@ -46,6 +81,7 @@
   text-align: center;
   margin-bottom: 4rem;
   position: relative;
+  z-index: 2;
 }
 
 .skills-title {
@@ -83,6 +119,8 @@
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 2rem;
   perspective: 1000px;
+  position: relative;
+  z-index: 2; /* above particles */
 }
 
 /* Skill Card */
@@ -98,6 +136,7 @@
   backdrop-filter: blur(10px);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   opacity: 0;
+  height:200px;
   transform: translateY(30px);
 }
 
@@ -132,7 +171,7 @@
 .skill-image {
   width: 100%;
   height: 120px;
-  object-fit: contain;
+  object-fit: cover;
   margin-bottom: 1.5rem;
   transition: transform 0.5s ease;
 }
@@ -182,3 +221,49 @@
     padding: 1.5rem;
   }
 }
+
+/* ===== OVERLAY IMAGE: fill card + text over image (additions) ===== */
+
+.skill-card { position: relative;
+ }
+
+/* Make image cover the entire card */
+.skill-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  margin: 0 !important;       /* no layout push */
+  z-index: 0;                 /* behind overlays/text */
+  transform-origin: center;
+  filter: brightness(0.85);
+}
+
+/* Soft gradient overlay for readability */
+.skill-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,0.65) 15%,
+    rgba(0,0,0,0.30) 60%,
+    rgba(0,0,0,0) 100%
+  );
+  z-index: 1;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+.skill-card:hover::after { opacity: 0.9; }
+
+/* Ensure text & progress render above image/overlay */
+.skill-title,
+.skill-progress {
+  position: relative;
+  z-index: 2;
+}
+
+/* Optional: a little spacing so title isn't flush with progress */
+.skill-title { margin-bottom: 0.75rem; }

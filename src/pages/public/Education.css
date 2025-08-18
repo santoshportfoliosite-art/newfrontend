@@ -30,20 +30,10 @@
 
 /* Upward float path with gentle horizontal drift */
 @keyframes edu-float {
-  0% {
-    transform: translateY(110vh) translateX(0);
-    opacity: 0;
-  }
-  20% {
-    opacity: 0.85;
-  }
-  80% {
-    opacity: 0.85;
-  }
-  100% {
-    transform: translateY(-20vh) translateX(var(--driftX, 20px));
-    opacity: 0;
-  }
+  0%   { transform: translateY(110vh) translateX(0); opacity: 0; }
+  20%  { opacity: 0.85; }
+  80%  { opacity: 0.85; }
+  100% { transform: translateY(-20vh) translateX(var(--driftX, 20px)); opacity: 0; }
 }
 
 /* Timeline Effect */
@@ -75,6 +65,14 @@
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+
+  /* reveal-in */
+  opacity: 0;
+  transform: translateY(24px);
+}
+.education-card.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .education-card::before {
@@ -117,6 +115,49 @@
   border-radius: 20px;
   font-weight: 500;
   display: inline-block;
+  margin-bottom: 0.75rem;
+}
+
+/* Optional Progress (shows only when data exists) */
+.education-progress {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  margin-top: 0.4rem;
+}
+.education-progress-bar {
+  --to: 0%;
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--brand), #3b82f6);
+  border-radius: 4px;
+  transition: width 1.2s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+.education-progress-bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.25) 50%, transparent 100%);
+  transform: translateX(-100%);
+  animation: eduProgressSheen 1.1s linear infinite;
+  pointer-events: none;
+}
+@keyframes eduProgressSheen {
+  to { transform: translateX(100%); }
+}
+.education-progress-percent {
+  display: block;
+  margin-top: 0.3rem;
+  text-align: right;
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.85);
+}
+.education-progress.is-visible .education-progress-bar {
+  width: var(--to, 0%);
 }
 
 /* Header Styles */
@@ -135,18 +176,55 @@
   margin-bottom: 1rem;
 }
 
+/* Heading shimmer + underline (same as About) */
+.heading-shimmer {
+  background-size: 200% 100%;
+  animation: eduTitleShimmer 4s linear infinite;
+}
+@keyframes eduTitleShimmer {
+  0% { background-position: 0% 50%; }
+  100% { background-position: -200% 50%; }
+}
+.heading-underline {
+  position: relative;
+  display: inline-block;
+}
+.heading-underline::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -10px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--brand), transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: eduUnderline 1.5s ease forwards 0.5s;
+}
+@keyframes eduUnderline {
+  to { transform: scaleX(1); }
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .education-timeline::before {
     left: 1rem;
     transform: none;
   }
-  
   .education-card {
     margin-left: 2rem;
   }
-  
   .education-title {
     font-size: 2rem;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .education-card,
+  .education-progress-bar,
+  .education-progress-bar::after,
+  .heading-shimmer,
+  .heading-underline::after {
+    animation: none !important;
+    transition: none !important;
   }
 }

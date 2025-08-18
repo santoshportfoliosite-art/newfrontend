@@ -121,7 +121,7 @@ export default function Projects() {
         ))}
       </div>
 
-      <ContactMe />
+     
     </section>
   );
 }

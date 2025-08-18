@@ -1,0 +1,257 @@
+/* Home Container */
+.home-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem clamp(1rem, 5vw, 4rem);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animated Background Elements */
+.home-bg-element {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.1;
+  z-index: -1;
+  animation: float 20s ease-in-out infinite;
+}
+
+.home-bg-element:nth-child(1) {
+  width: 400px;
+  height: 400px;
+  background: var(--brand);
+  top: 10%;
+  left: 5%;
+  animation-delay: 0s;
+}
+
+.home-bg-element:nth-child(2) {
+  width: 500px;
+  height: 500px;
+  background: #3b82f6;
+  bottom: 10%;
+  right: 5%;
+  animation-delay: 3s;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-30px) rotate(5deg); }
+}
+
+/* Hero Section */
+.hero-section {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 4rem;
+  align-items: center;
+}
+
+.hero-content {
+  flex: 1;
+  position: relative;
+}
+
+.hero-image {
+  width: 380px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.hero-title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  background: linear-gradient(90deg, #fff, var(--brand));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.role-text {
+  display: inline-block;
+  position: relative;
+  color: #fff; /* ✅ FIX so roles are visible */
+}
+
+.role-text::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--brand);
+  transform-origin: left;
+  animation: roleUnderline 1.8s infinite;
+}
+
+@keyframes roleUnderline {
+  0%, 100% { transform: scaleX(0); }
+  50% { transform: scaleX(1); }
+}
+
+.hero-description {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Section Headers */
+.section-header {
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.section-title {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 700;
+  background: linear-gradient(90deg, #fff, var(--brand));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+}
+
+.section-counter {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  padding: 0.5rem 1.2rem;
+  border-radius: 50px;
+  font-weight: 500;
+  margin-left: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Grid Layouts */
+.grid-section {
+  margin-bottom: 5rem;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Cards */
+.card {
+  background: rgba(17, 24, 39, 0.7);
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent, rgba(59, 130, 246, 0.1));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.card img {
+  width: 100%;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  transition: transform 0.5s ease;
+}
+
+.card:hover img {
+  transform: scale(1.05);
+}
+
+.card strong {
+  font-size: 1.2rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+/* About Section */
+.about-section {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+.about-image {
+  width: 380px;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.about-content {
+  flex: 1;
+}
+
+.about-description {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1.1rem;
+  line-height: 1.8;
+}
+
+/* Contact Cards */
+.contact-card {
+  text-align: center;
+  padding: 2rem;
+}
+
+.contact-card svg {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--brand);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .hero-section,
+  .about-section {
+    flex-direction: column;
+  }
+  
+  .hero-image,
+  .about-image {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .grid-3 {
+    grid-template-columns: 1fr;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+  }
+}

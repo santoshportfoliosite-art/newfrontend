@@ -14,51 +14,78 @@ import "./Contact.css";
 
 export default function Contact() {
   const [c, setC] = useState({});
+  const contactRef = useRef(null);
+  const socialRef = useRef(null);
   const particlesRef = useRef(null);
-  
+
   useEffect(() => {
     api.get("/contact").then(({ data }) => setC(data?.data || {}));
   }, []);
 
+  // Particles (colorful dots floating upward)
   useEffect(() => {
     const container = particlesRef.current;
     if (!container) return;
-    
+
     const particleCount = 100;
-    container.innerHTML = '';
-    
+    container.innerHTML = "";
+
     const colors = [
-      '#4facfe', '#00f2fe', '#ff4e50', '#f9d423', 
-      '#a8ff78', '#78ffd6', '#f857a6', '#ff5858'
+      "#4facfe", "#00f2fe", "#ff4e50", "#f9d423",
+      "#a8ff78", "#78ffd6", "#f857a6", "#ff5858"
     ];
-    
+
     for (let i = 0; i < particleCount; i++) {
-      const particle = document.createElement('div');
-      particle.className = 'contact-particle';
-      
-      // Random positioning
-      particle.style.left = `${Math.random() * 100}%`;
-      // Start relative to the top so every particle crosses the viewport
-      particle.style.top = `0`;
-
-      // Random size between 1-4px
-      const size = Math.random() * 3 + 1;
-      particle.style.width = `${size}px`;
-      particle.style.height = `${size}px`;
-      
-      // Random color
-      particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-      
-      // Small horizontal drift per particle (used in keyframes via CSS var)
-      particle.style.setProperty('--driftX', `${(Math.random() * 8 - 4).toFixed(2)}vw`);
-
-      // Animation timing
-      particle.style.animationDuration = `${(Math.random() * 10 + 10).toFixed(2)}s`; // 10–20s
-      particle.style.animationDelay = `${(Math.random() * 2).toFixed(2)}s`;
-      
-      container.appendChild(particle);
+      const p = document.createElement("div");
+      p.className = "contact-particle";
+      p.style.left = `${Math.random() * 100}%`;
+      p.style.top = `0`;
+      const size = Math.random() * 3 + 1; // 1–4px
+      p.style.width = `${size}px`;
+      p.style.height = `${size}px`;
+      p.style.background = colors[Math.floor(Math.random() * colors.length)];
+      p.style.setProperty("--driftX", `${(Math.random() * 8 - 4).toFixed(2)}vw`);
+      p.style.animationDuration = `${(Math.random() * 10 + 10).toFixed(2)}s`;
+      p.style.animationDelay = `${(Math.random() * 3).toFixed(2)}s`;
+      container.appendChild(p);
     }
   }, []);
+
+  // Reveal cards on scroll (contact grid + social grid)
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) entry.target.classList.add("visible");
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    if (contactRef.current) {
+      contactRef.current
+        .querySelectorAll(".contact-card")
+        .forEach(card => observer.observe(card));
+    }
+
+    if (socialRef.current) {
+      socialRef.current
+        .querySelectorAll(".contact-card")
+        .forEach(card => observer.observe(card));
+    }
+
+    return () => observer.disconnect();
+  }, [c]);
+
+  // Normalize URLs so social sites actually work/show correctly
+  const normalizeUrl = (u) => {
+    if (!u || typeof u !== "string") return null;
+    const trimmed = u.trim();
+    if (!trimmed) return null;
+    if (/^https?:\/\//i.test(trimmed)) return trimmed;
+    // add protocol if user saved "facebook.com/..." etc.
+    return `https://${trimmed}`;
+  };
 
   // Build safe links
   const telHref = c?.mobile
@@ -77,10 +104,26 @@ export default function Contact() {
       )}&body=${encodeURIComponent("Hi Santosh,\n\nI saw your portfolio and ...")}`
     : null;
 
+  // Social links (support common variants and normalize)
+  const socialLinks = [
+    { key: "facebook", icon: <FaFacebook />, label: "Facebook", href: normalizeUrl(c?.facebook || c?.fb || c?.fbPage) },
+    { key: "instagram", icon: <FaInstagram />, label: "Instagram", href: normalizeUrl(c?.instagram) },
+    { key: "youtube", icon: <FaYoutube />, label: "YouTube", href: normalizeUrl(c?.youtube) },
+    { key: "tiktok", icon: <FaTiktok />, label: "TikTok", href: normalizeUrl(c?.tiktok) },
+    // Keep a separate Facebook Page if provided and distinct
+    ...(c?.fbPage && normalizeUrl(c.fbPage) && normalizeUrl(c.fbPage) !== normalizeUrl(c.facebook)
+      ? [{ key: "fbPage", icon: <FaFacebook />, label: "Facebook Page", href: normalizeUrl(c.fbPage) }]
+      : [])
+  ].filter(s => !!s.href); // only render valid links
+
   return (
-    <div className="contact-container">
-      {/* Animated Particles */}
+    <section className="contact-container">
+      {/* Full-screen Particles */}
       <div className="contact-particles" ref={particlesRef} />
+
+      {/* Animated Background Elements (your original blobs) */}
+      <div className="contact-bg-element"></div>
+      <div className="contact-bg-element"></div>
       
       {/* Contact Header */}
       <div className="contact-header">
@@ -88,7 +131,7 @@ export default function Contact() {
       </div>
       
       {/* Contact Methods */}
-      <div className="contact-grid">
+      <div className="contact-grid" ref={contactRef}>
         {telHref ? (
           <div className="contact-card">
             <a href={telHref} aria-label="Call me">
@@ -141,51 +184,28 @@ export default function Contact() {
       {/* Social Media */}
       <div className="social-section">
         <h2 className="social-title">Social Sites</h2>
-        <div className="contact-grid">
-          {c.facebook && (
-            <div className="contact-card">
-              <a href={c.facebook} target="_blank" rel="noreferrer">
-                <FaFacebook />
-                <span>Facebook</span>
-              </a>
-            </div>
-          )}
-          {c.instagram && (
-            <div className="contact-card">
-              <a href={c.instagram} target="_blank" rel="noreferrer">
-                <FaInstagram />
-                <span>Instagram</span>
-              </a>
-            </div>
-          )}
-          {c.youtube && (
-            <div className="contact-card">
-              <a href={c.youtube} target="_blank" rel="noreferrer">
-                <FaYoutube />
-                <span>YouTube</span>
-              </a>
-            </div>
-          )}
-          {c.tiktok && (
-            <div className="contact-card">
-              <a href={c.tiktok} target="_blank" rel="noreferrer">
-                <FaTiktok />
-                <span>TikTok</span>
-              </a>
-            </div>
-          )}
-          {c.fbPage && (
-            <div className="contact-card">
-              <a href={c.fbPage} target="_blank" rel="noreferrer">
-                <FaFacebook />
-                <span>Facebook Page</span>
-              </a>
-            </div>
+        <div className="contact-grid" ref={socialRef}>
+          {socialLinks.length > 0 ? (
+            socialLinks.map(s => (
+              <div key={s.key} className="contact-card">
+                <a href={s.href} target="_blank" rel="noreferrer" aria-label={s.label}>
+                  {s.icon}
+                  <span>{s.label}</span>
+                </a>
+              </div>
+            ))
+          ) : (
+            <>
+              <div className="contact-card"><FaFacebook /><span>Facebook</span><p>—</p></div>
+              <div className="contact-card"><FaInstagram /><span>Instagram</span><p>—</p></div>
+              <div className="contact-card"><FaYoutube /><span>YouTube</span><p>—</p></div>
+              <div className="contact-card"><FaTiktok /><span>TikTok</span><p>—</p></div>
+            </>
           )}
         </div>
       </div>
-      
-      <ContactMe />
-    </div>
+      <div className="contactmediv"> <ContactMe /></div>
+     
+    </section>
   );
 }

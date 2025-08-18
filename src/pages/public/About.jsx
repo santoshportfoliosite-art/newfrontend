@@ -18,21 +18,7 @@ export default function About() {
     const starCount = 100;
     container.innerHTML = '';
 
-    // Inject keyframes once (twinkle + drift)
-    const styleEl = document.createElement('style');
-    styleEl.textContent = `
-      @keyframes star-twinkle {
-        0%   { opacity: 0.1; transform: scale(0.9); }
-        50%  { opacity: var(--opacity, 0.8); transform: scale(1); }
-        100% { opacity: 0.1; transform: scale(0.9); }
-      }
-      @keyframes star-drift {
-        0%   { transform: translate(0, 0); }
-        100% { transform: translate(var(--driftX, 0), var(--driftY, 0)); }
-      }
-    `;
-    document.head.appendChild(styleEl);
-    
+    // Create stars (CSS provides keyframes)
     for (let i = 0; i < starCount; i++) {
       const star = document.createElement('div');
       star.className = 'star';
@@ -48,28 +34,28 @@ export default function About() {
       const hue = Math.floor(Math.random() * 360);
       star.style.background = `hsla(${hue} 90% 70% / 0.9)`;
 
-      // Existing CSS variables from your code
-      star.style.setProperty('--opacity', Math.random() * 0.7 + 0.3);
+      // Twinkle intensity & duration
+      star.style.setProperty('--opacity', (Math.random() * 0.7 + 0.3).toFixed(2));
       star.style.setProperty('--duration', `${(Math.random() * 3 + 2).toFixed(2)}s`);
 
-      // Add gentle drift using CSS variables (small viewport-relative offsets)
+      // Gentle drift using viewport-relative offsets
       star.style.setProperty('--driftX', `${(Math.random() * 10 - 5).toFixed(2)}vw`);
       star.style.setProperty('--driftY', `${(Math.random() * 10 - 5).toFixed(2)}vh`);
 
-      // Stagger start
-      star.style.animationDelay = `${Math.random() * 5}s`;
+      // Staggered start
+      star.style.animationDelay = `${(Math.random() * 5).toFixed(2)}s`;
 
       container.appendChild(star);
     }
 
     return () => {
-      document.head.removeChild(styleEl);
       container.innerHTML = '';
     };
   }, []);
 
   return (
     <div className="about-container">
+      {/* Full-screen stars */}
       <div className="stars-container" ref={starsRef} />
       
       <div className="about-content">
@@ -98,14 +84,15 @@ export default function About() {
         </div>
         
         <div className="about-text-section">
-          <h1 className="about-title">About Me</h1>
+          <h1 className="about-title heading-shimmer heading-underline">About Me</h1>
           <p className="about-description">
             {data?.description || "I'm a passionate developer with expertise in modern web technologies. My journey has taken me through various domains, allowing me to build diverse solutions and collaborate with amazing teams. I specialize in creating responsive, user-friendly applications with clean code and efficient architecture. With several years of experience, I've developed a strong problem-solving ability and a keen eye for detail that helps me deliver high-quality products."}
           </p>
+
+          
         </div>
       </div>
       
-      <ContactMe />
     </div>
   );
 }
