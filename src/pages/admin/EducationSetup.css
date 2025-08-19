@@ -1,0 +1,238 @@
+/* Dark Theme Variables */
+:root {
+  --dark-bg: #121212;
+  --card-bg: #1e1e1e;
+  --accent: #00ffff;
+  --text: #ffffff;
+  --input-bg: #2a2a2a;
+  --input-border: #333;
+  --danger: #ff4d4d;
+}
+
+/* Base Layout */
+.education-setup-container {
+  padding: 2rem;
+  background: var(--dark-bg);
+  min-height: 100vh;
+  color: var(--text);
+}
+
+/* Typography */
+.education-title {
+  font-size: 2.2rem;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(90deg, var(--accent), #0080ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  position: relative;
+}
+
+.education-title::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  animation: slideIn 1.5s infinite alternate;
+}
+
+.history-title {
+  font-size: 1.8rem;
+  margin: 2rem 0 1rem;
+  color: var(--accent);
+}
+
+@keyframes slideIn {
+  from { width: 0; opacity: 0; }
+  to { width: 100%; opacity: 1; }
+}
+
+/* Form Styling */
+.education-form-card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.education-form-card:hover {
+  transform: translateY(-3px);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.input-group {
+  position: relative;
+}
+
+.input-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--accent);
+}
+
+.education-input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.education-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(0, 255, 255, 0.2);
+}
+
+/* Button Styling */
+.add-btn {
+  background: linear-gradient(135deg, var(--accent), #0080ff);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.add-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #0080ff, var(--accent));
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 255, 255, 0.3);
+}
+
+.add-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.delete-btn {
+  background: transparent;
+  color: var(--danger);
+  border: 1px solid var(--danger);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.delete-btn:hover {
+  background: rgba(255, 77, 77, 0.1);
+  transform: translateY(-1px);
+}
+
+/* Education List Styling */
+.education-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.education-item {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  display: grid;
+  grid-template-columns: 50px 1fr 1.5fr 100px auto;
+  gap: 1rem;
+  align-items: center;
+  transition: all 0.3s ease;
+  border-left: 3px solid transparent;
+}
+
+.education-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border-left-color: var(--accent);
+}
+
+.item-index {
+  font-weight: 600;
+  color: var(--accent);
+  text-align: center;
+}
+
+.item-level {
+  font-weight: 500;
+}
+
+.item-institution {
+  opacity: 0.9;
+}
+
+.item-year {
+  text-align: center;
+  font-weight: 600;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: rgba(255, 255, 255, 0.5);
+  font-style: italic;
+}
+
+/* Loading Spinner */
+.education-loading-spinner, .saving-spinner {
+  border: 3px solid rgba(0, 255, 255, 0.2);
+  border-radius: 50%;
+  border-top: 3px solid var(--accent);
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 2rem auto;
+}
+
+.saving-spinner {
+  display: inline-block;
+  vertical-align: middle;
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .education-item {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    padding: 1rem;
+  }
+  
+  .item-index, .item-year {
+    text-align: left;
+  }
+  
+  .delete-btn {
+    margin-top: 0.5rem;
+    width: 100%;
+  }
+  
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}

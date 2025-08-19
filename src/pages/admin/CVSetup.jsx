@@ -1,35 +1,59 @@
 import { useEffect, useState } from "react";
 import api from "../../api/axiosClient.js";
 import { ok, err } from "../../utils/toast.js";
-import "../../styles/globals.css";
-import "../../styles/Pages.css";
-import "../../styles/Admin.css";
+import "./cvsetup.css";
+
 export default function CVSetup() {
   const [url, setUrl] = useState("");
   const [saving, setSaving] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const load = async () => {
-    const { data } = await api.get("/cv");
-    setUrl(data?.data?.url || "");
+    try {
+      const { data } = await api.get("/cv");
+      setUrl(data?.data?.url || "");
+    } catch (e) { err(e); } finally { setIsLoading(false); }
   };
+
   useEffect(() => { load(); }, []);
 
   const save = async () => {
     setSaving(true);
     try {
       await api.put("/cv", { url });
-      ok("CV link saved");
+      ok("CV link saved successfully!");
     } catch (e) { err(e); } finally { setSaving(false); }
   };
 
+  if (isLoading) return <div className="cv-loading-spinner"></div>;
+
   return (
-    <section className="grid" style={{ gap: 16 }}>
-      <h2>CV Link Setup</h2>
-      <div className="card">
-        <label>CV URL</label>
-        <input type="url" value={url} onChange={(e)=>setUrl(e.target.value)} placeholder="https://..." />
-        <button className="btn" style={{ marginTop: 12 }} onClick={save} disabled={saving}>
-          {saving ? "Saving..." : "Save"}
+    <section className="cv-setup-container">
+      <h2 className="cv-title">CV Link Setup</h2>
+      
+      <div className="cv-card">
+        <div className="input-group">
+          <label className="cv-label">CV URL</label>
+          <input
+            type="url"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            placeholder="https://drive.google.com/..."
+            className="cv-input"
+          />
+          <div className="input-border"></div>
+        </div>
+        
+        <button 
+          className="cv-save-btn" 
+          onClick={save} 
+          disabled={saving || !url}
+        >
+          {saving ? (
+            <>
+              <span className="cv-saving-spinner"></span> Saving...
+            </>
+          ) : "Save CV Link"}
         </button>
       </div>
     </section>

@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import api from "../../api/axiosClient.js";
 import { ok, err } from "../../utils/toast.js";
 import UploadImage from "../../components/UploadImage.jsx";
+import "./SkillSetup.css";
 import "../../styles/globals.css";
 import "../../styles/Pages.css";
 import "../../styles/Admin.css";
+
 export default function SkillSetup() {
   const [items, setItems] = useState([]);
   const [file, setFile] = useState(null);
@@ -12,58 +14,106 @@ export default function SkillSetup() {
   const [saving, setSaving] = useState(false);
 
   const load = async () => {
-    const { data } = await api.get("/skills");
-    setItems(data?.data || []);
+    try {
+      const { data } = await api.get("/skills");
+      setItems(data?.data || []);
+    } catch (error) {
+      err(error);
+    }
   };
 
   useEffect(() => { load(); }, []);
 
-  const add = async () => {
+  const addSkill = async () => {
     if (!file) return err(new Error("Cover image is required"));
-    if (!title) return err(new Error("Title is required"));
+    if (!title.trim()) return err(new Error("Title is required"));
+    
     setSaving(true);
     try {
       const form = new FormData();
       form.append("cover", file);
-      form.append("title", title);
-      await api.post("/skills", form, { headers: { "Content-Type": "multipart/form-data" } });
-      ok("Skill added");
-      setFile(null); setTitle("");
+      form.append("title", title.trim());
+      await api.post("/skills", form, { 
+        headers: { "Content-Type": "multipart/form-data" } 
+      });
+      ok("Skill added successfully! 🎯");
+      setFile(null); 
+      setTitle("");
       await load();
-    } catch (e) { err(e); } finally { setSaving(false); }
+    } catch (error) { 
+      err(error); 
+    } finally { 
+      setSaving(false); 
+    }
   };
 
-  const del = async (id) => {
-    if (!confirm("Delete this skill?")) return;
+  const deleteSkill = async (id) => {
+    if (!confirm("Are you sure you want to delete this skill? This action cannot be undone.")) return;
     try {
       await api.delete(`/skills/${id}`);
-      ok("Deleted");
+      ok("Skill deleted successfully");
       await load();
-    } catch (e) { err(e); }
+    } catch (error) { 
+      err(error); 
+    }
   };
 
   return (
-    <section className="grid" style={{ gap: 16 }}>
-      <h2>Skill Setup</h2>
-      <div className="row">
-        <UploadImage label="Cover Image" value={null} onChange={setFile} onDelete={()=>setFile(null)} />
-        <div className="card" style={{ flex: 1 }}>
-          <label>Skill Title</label>
-          <input value={title} onChange={(e)=>setTitle(e.target.value)} />
-          <button className="btn" style={{ marginTop: 12 }} onClick={add} disabled={saving}>
-            {saving ? "Adding..." : "Add Skill"}
+    <section className="skill-setup">
+      <h2 className="skill-title">Skill Setup</h2>
+      
+      <div className="skill-form-row">
+        <UploadImage 
+          label="Skill Icon/Image" 
+          value={null} 
+          onChange={setFile} 
+          onDelete={() => setFile(null)} 
+        />
+        
+        <div className="skill-form-card">
+          <div className="form-group">
+            <label className="form-label">Skill Title</label>
+            <input
+              className="form-input"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Enter skill name (e.g., React, Node.js, Photoshop)"
+              disabled={saving}
+            />
+          </div>
+          
+          <button 
+            className="btn submit-btn" 
+            onClick={addSkill} 
+            disabled={saving}
+          >
+            {saving ? "Adding Skill..." : "➕ Add Skill"}
           </button>
         </div>
       </div>
 
-      <h3 style={{ marginTop: 20 }}>Skills List</h3>
-      <div className="grid grid-3">
-        {items.map(s => (
-          <div className="card" key={s._id}>
-            {s.cover?.url && <img alt={s.title} src={s.cover.url} style={{ width: "100%", borderRadius: 12, marginBottom: 8 }} />}
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <strong>{s.title}</strong>
-              <button className="btn outline" onClick={() => del(s._id)}>Delete</button>
+      <h3 className="skill-list-title">Skills List</h3>
+      
+      <div className="skills-grid">
+        {items.map(skill => (
+          <div className="skill-card" key={skill._id}>
+            {skill.cover?.url && (
+              <img 
+                className="skill-image" 
+                alt={skill.title} 
+                src={skill.cover.url} 
+              />
+            )}
+            
+            <div className="skill-info">
+              <span className="skill-name">{skill.title}</span>
+              <button 
+                className="btn outline delete-btn" 
+                onClick={() => deleteSkill(skill._id)}
+                disabled={saving}
+              >
+                🗑️ Delete
+              </button>
             </div>
           </div>
         ))}

@@ -1,0 +1,194 @@
+/* Dark Theme Variables */
+:root {
+  --dark-bg: #121212;
+  --card-bg: #1e1e1e;
+  --accent: #00ffff;
+  --text: #ffffff;
+  --input-bg: #2a2a2a;
+  --input-border: #333;
+  --disabled: #555;
+}
+
+/* Base Layout */
+.cv-setup-container {
+  padding: 2rem;
+  background: var(--dark-bg);
+  min-height: 100vh;
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Typography */
+.cv-title {
+  font-size: 2.2rem;
+  margin-bottom: 2rem;
+  background: linear-gradient(90deg, var(--accent), #0080ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  position: relative;
+}
+
+.cv-title::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  animation: underlineSlide 2s infinite alternate;
+}
+
+@keyframes underlineSlide {
+  0% { width: 0; opacity: 0; }
+  100% { width: 100%; opacity: 1; }
+}
+
+/* Card Styling */
+.cv-card {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.cv-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0, 255, 255, 0.1);
+}
+
+/* Input Styling */
+.input-group {
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.cv-label {
+  display: block;
+  margin-bottom: 0.8rem;
+  font-weight: 500;
+  color: var(--accent);
+}
+
+.cv-input {
+  width: 100%;
+  padding: 1rem;
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.cv-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: #333;
+}
+
+.input-border {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--accent);
+  transition: width 0.4s ease;
+}
+
+.cv-input:focus ~ .input-border {
+  width: 100%;
+}
+
+/* Button Styling */
+.cv-save-btn {
+  background: transparent;
+  color: var(--accent);
+  border: 2px solid var(--accent);
+  padding: 0.8rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.cv-save-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+  transition: 0.5s;
+}
+
+.cv-save-btn:hover {
+  background: rgba(0, 255, 255, 0.05);
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+}
+
+.cv-save-btn:hover::before {
+  left: 100%;
+}
+
+.cv-save-btn:disabled {
+  color: var(--disabled);
+  border-color: var(--disabled);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.cv-save-btn:disabled:hover::before {
+  left: -100%;
+}
+
+/* Loading Spinners */
+.cv-loading-spinner, .cv-saving-spinner {
+  border: 3px solid rgba(0, 255, 255, 0.2);
+  border-radius: 50%;
+  border-top: 3px solid var(--accent);
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+.cv-loading-spinner {
+  margin: 2rem auto;
+  width: 40px;
+  height: 40px;
+  border-width: 4px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .cv-setup-container {
+    padding: 1.5rem;
+  }
+  
+  .cv-card {
+    padding: 1.5rem;
+  }
+  
+  .cv-title {
+    font-size: 1.8rem;
+  }
+}

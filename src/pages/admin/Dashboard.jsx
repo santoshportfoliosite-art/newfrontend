@@ -1,19 +1,34 @@
 import { Link } from "react-router-dom";
-import "../../styles/globals.css";
-import "../../styles/Pages.css";
-import "../../styles/Admin.css";
+import "./Dashboard.css";
+
 export default function Dashboard() {
+  const menuItems = [
+    { title: "About Setup", path: "/aboutsetup", icon: "📝" },
+    { title: "Project Setup", path: "/projectsetup", icon: "💻" },
+    { title: "Contact Setup", path: "/contactsetup", icon: "📱" },
+    { title: "Skill Setup", path: "/skillsetup", icon: "⚡" },
+    { title: "CV Link Setup", path: "/cv", icon: "📄" },
+    { title: "Messages", path: "/messages", icon: "✉️" },
+    { title: "Education Setup", path: "/educationsetup", icon: "🎓" },
+  ];
+
   return (
-    <section className="container">
-      <h2>Portfolio Dashboard</h2>
-      <div className="grid grid-3" style={{ marginTop: 16 }}>
-        <Link to="/aboutsetup" className="card">About Setup</Link>
-        <Link to="/projectsetup" className="card">Project Setup</Link>
-        <Link to="/contactsetup" className="card">Contact Setup</Link>
-        <Link to="/skillsetup" className="card">Skill Setup</Link>
-        <Link to="/cv" className="card">CV Link Setup</Link>
-        <Link to="/messages" className="card">Messages</Link>
-        <Link to="/educationsetup" className="card">Education Setup</Link>
+    <section className="dashboard-container">
+      <h2 className="dashboard-title">Portfolio Dashboard</h2>
+      
+      <div className="dashboard-grid">
+        {menuItems.map((item, index) => (
+          <Link 
+            to={item.path} 
+            className="dashboard-card"
+            key={index}
+            style={{ animationDelay: `${index * 0.1}s` }}
+          >
+            <span className="card-icon">{item.icon}</span>
+            <h3 className="card-title">{item.title}</h3>
+            <div className="card-hover-effect"></div>
+          </Link>
+        ))}
       </div>
     </section>
   );

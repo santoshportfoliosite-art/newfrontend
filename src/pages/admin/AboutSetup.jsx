@@ -2,17 +2,19 @@ import { useEffect, useState } from "react";
 import api from "../../api/axiosClient.js";
 import { ok, err } from "../../utils/toast.js";
 import UploadImage from "../../components/UploadImage.jsx";
-import "../../styles/globals.css";
-import "../../styles/Pages.css";
-import "../../styles/Admin.css";
+import "./AboutSetup.css";
+
 export default function AboutSetup() {
   const [data, setData] = useState({ image: null, description: "" });
   const [file, setFile] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const load = async () => {
-    const { data } = await api.get("/about");
-    setData(data?.data || { image: null, description: "" });
+    try {
+      const { data } = await api.get("/about");
+      setData(data?.data || { image: null, description: "" });
+    } catch (e) { err(e); } finally { setIsLoading(false); }
   };
 
   useEffect(() => { load(); }, []);
@@ -24,7 +26,7 @@ export default function AboutSetup() {
       if (file) form.append("image", file);
       form.append("description", data.description || "");
       await api.put("/about", form, { headers: { "Content-Type": "multipart/form-data" } });
-      ok("About saved");
+      ok("About saved successfully!");
       setFile(null);
       await load();
     } catch (e) { err(e); } finally { setSaving(false); }
@@ -33,21 +35,39 @@ export default function AboutSetup() {
   const removeImage = async () => {
     try {
       await api.delete("/about/image");
-      ok("Image deleted");
+      ok("Image deleted!");
       await load();
     } catch (e) { err(e); }
   };
 
+  if (isLoading) return <div className="loading-spinner"></div>;
+
   return (
-    <section className="grid" style={{ gap: 16 }}>
-      <h2>About Setup</h2>
-      <div className="row">
-        <UploadImage label="Profile Image" value={data.image} onChange={setFile} onDelete={removeImage} />
-        <div className="card" style={{ flex: 1 }}>
-          <label>Description (max 2000)</label>
-          <textarea rows="10" value={data.description || ""} onChange={(e)=>setData({...data, description:e.target.value})} />
-          <button className="btn" style={{ marginTop: 12 }} onClick={save} disabled={saving}>
-            {saving ? "Saving..." : "Save"}
+    <section className="about-setup-container">
+      <h2 className="animated-heading">About Setup</h2>
+      <div className="about-content-grid">
+        <UploadImage 
+          label="Profile Image" 
+          value={data.image} 
+          onChange={setFile} 
+          onDelete={removeImage} 
+        />
+        <div className="description-card">
+          <label className="input-label">Description (max 2000 chars)</label>
+          <textarea
+            className="animated-textarea"
+            rows="10"
+            value={data.description || ""}
+            onChange={(e) => setData({ ...data, description: e.target.value })}
+            maxLength="2000"
+          />
+          <div className="char-count">{data.description?.length || 0}/2000</div>
+          <button 
+            className="save-btn pulse-on-hover" 
+            onClick={save} 
+            disabled={saving}
+          >
+            {saving ? <span className="saving-spinner"></span> : "Save Changes"}
           </button>
         </div>
       </div>

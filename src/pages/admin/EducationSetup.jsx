@@ -1,77 +1,129 @@
 import { useEffect, useState } from "react";
 import api from "../../api/axiosClient.js";
 import { ok, err } from "../../utils/toast.js";
-import "../../styles/globals.css";
-import "../../styles/Pages.css";
-import "../../styles/Admin.css";
+import "./EducationSetup.css";
+
 export default function EducationSetup() {
   const [items, setItems] = useState([]);
-  const [f, setF] = useState({ level: "", institution: "", year: "" });
+  const [formData, setFormData] = useState({ 
+    level: "", 
+    institution: "", 
+    year: "" 
+  });
   const [saving, setSaving] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const load = async () => {
-    const { data } = await api.get("/education");
-    setItems(data?.data || []);
+    try {
+      const { data } = await api.get("/education");
+      setItems(data?.data || []);
+    } catch (e) { err(e); } finally { setIsLoading(false); }
   };
 
   useEffect(() => { load(); }, []);
 
-  const add = async () => {
-    if (!f.level || !f.institution || !f.year) return;
+  const handleAdd = async () => {
+    if (!formData.level || !formData.institution || !formData.year) {
+      err("Please fill all fields");
+      return;
+    }
+    
     setSaving(true);
     try {
-      await api.post("/education", { level: f.level, institution: f.institution, year: Number(f.year) });
-      ok("Education added");
-      setF({ level: "", institution: "", year: "" });
+      await api.post("/education", { 
+        level: formData.level, 
+        institution: formData.institution, 
+        year: Number(formData.year) 
+      });
+      ok("Education added successfully!");
+      setFormData({ level: "", institution: "", year: "" });
       await load();
     } catch (e) { err(e); } finally { setSaving(false); }
   };
 
-  const del = async (id) => {
-    if (!confirm("Delete this entry?")) return;
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this education entry?")) return;
     try {
       await api.delete(`/education/${id}`);
-      ok("Deleted");
+      ok("Education deleted");
       await load();
     } catch (e) { err(e); }
   };
 
+  if (isLoading) return <div className="education-loading-spinner"></div>;
+
   return (
-    <section className="grid" style={{ gap: 16 }}>
-      <h2>Education Setup</h2>
-      <div className="card">
-        <div className="row">
-          <div style={{ flex: 1 }}>
-            <label>Level</label>
-            <input value={f.level} onChange={(e)=>setF({...f, level:e.target.value})} />
+    <section className="education-setup-container">
+      <h2 className="education-title">Education Setup</h2>
+      
+      <div className="education-form-card">
+        <div className="form-grid">
+          <div className="input-group">
+            <label className="input-label">Level</label>
+            <input
+              value={formData.level}
+              onChange={(e) => setFormData({...formData, level: e.target.value})}
+              className="education-input"
+              placeholder="e.g. Bachelor's Degree"
+            />
           </div>
-          <div style={{ flex: 2 }}>
-            <label>Institution Name</label>
-            <input value={f.institution} onChange={(e)=>setF({...f, institution:e.target.value})} />
+          
+          <div className="input-group">
+            <label className="input-label">Institution Name</label>
+            <input
+              value={formData.institution}
+              onChange={(e) => setFormData({...formData, institution: e.target.value})}
+              className="education-input"
+              placeholder="e.g. Harvard University"
+            />
           </div>
-          <div style={{ width: 140 }}>
-            <label>Year Passout</label>
-            <input value={f.year} onChange={(e)=>setF({...f, year:e.target.value})} placeholder="2023" />
+          
+          <div className="input-group">
+            <label className="input-label">Year Passout</label>
+            <input
+              value={formData.year}
+              onChange={(e) => setFormData({...formData, year: e.target.value})}
+              className="education-input"
+              placeholder="2023"
+              type="number"
+            />
           </div>
         </div>
-        <button className="btn" style={{ marginTop: 12 }} onClick={add} disabled={saving}>
-          {saving ? "Adding..." : "Add"}
+        
+        <button 
+          className="add-btn" 
+          onClick={handleAdd} 
+          disabled={saving || !formData.level || !formData.institution || !formData.year}
+        >
+          {saving ? (
+            <>
+              <span className="saving-spinner"></span> Adding...
+            </>
+          ) : "Add Education"}
         </button>
       </div>
 
-      <h3 style={{ marginTop: 20 }}>Education History</h3>
-      <div className="grid">
-        {items.map((e, idx) => (
-          <div key={e._id} className="card" style={{ display: "grid", gridTemplateColumns: "50px 1fr 1fr 120px", gap: 10, alignItems: "center" }}>
-            <div>{idx + 1}</div>
-            <div>{e.level}</div>
-            <div>{e.institution}</div>
-            <div style={{ display: "flex", gap: 10, justifyContent: "end", alignItems: "center" }}>
-              <span>{e.year}</span>
-              <button className="btn outline" onClick={() => del(e._id)}>Delete</button>
+      <h3 className="history-title">Education History</h3>
+      
+      <div className="education-list">
+        {items.length === 0 ? (
+          <div className="empty-state">No education entries yet</div>
+        ) : (
+          items.map((item, index) => (
+            <div key={item._id} className="education-item">
+              <div className="item-index">{index + 1}</div>
+              <div className="item-level">{item.level}</div>
+              <div className="item-institution">{item.institution}</div>
+              <div className="item-year">{item.year}</div>
+              <button 
+                className="delete-btn"
+                onClick={() => handleDelete(item._id)}
+              >
+                Delete
+              </button>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </section>
   );

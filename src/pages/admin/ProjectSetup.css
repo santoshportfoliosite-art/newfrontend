@@ -1,0 +1,234 @@
+/* Dark Theme Variables */
+:root {
+  --dark-bg: #121212;
+  --card-bg: #1e1e1e;
+  --accent: #00ffff;
+  --text: #ffffff;
+  --muted: rgba(255, 255, 255, 0.7);
+  --danger: #ff5252;
+  --border: rgba(255, 255, 255, 0.08);
+}
+
+/* Base Layout */
+.projects-container {
+  padding: 2rem;
+  background: var(--dark-bg);
+  min-height: 100vh;
+  color: var(--text);
+}
+
+/* Typography */
+.projects-title {
+  font-size: 2.2rem;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(90deg, var(--accent), #0080ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  position: relative;
+}
+.projects-title::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 100px;
+  height: 3px;
+  background: var(--accent);
+  animation: slideIn 1.5s infinite alternate;
+}
+.projects-list-title {
+  font-size: 1.8rem;
+  margin: 2rem 0 1rem;
+  color: var(--accent);
+}
+@keyframes slideIn { from { width: 0; opacity: 0; } to { width: 100px; opacity: 1; } }
+
+/* Form Styling */
+.project-form-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+@media (max-width: 768px) {
+  .project-form-container { grid-template-columns: 1fr; }
+}
+.upload-section,
+.form-section {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+.form-section { display: flex; flex-direction: column; gap: 1.5rem; }
+.input-group { position: relative; }
+.input-label { display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--accent); }
+.project-input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+.project-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(0, 255, 255, 0.2);
+}
+
+/* Primary Button */
+.add-project-btn {
+  background: linear-gradient(135deg, var(--accent), #0080ff);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.add-project-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #0080ff, var(--accent));
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 255, 255, 0.3);
+}
+.add-project-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* Projects Grid */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Card + Image */
+.project-card {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: transparent; /* no solid background behind texts */
+}
+.project-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+}
+
+.project-image-container {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+}
+
+/* Darken the image */
+.project-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease, filter 0.3s ease;
+  filter: brightness(0.45);          /* <- dark image */
+}
+.project-card:hover .project-image {
+  transform: scale(1.05);
+  filter: brightness(0.55);
+}
+
+/* Keep a soft top gradient; sits under the text */
+.project-image-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 40%, rgba(0,0,0,0) 70%);
+  opacity: 1;                         /* <- always on */
+  transition: opacity 0.3s ease;
+  pointer-events: none;               /* text/buttons clickable */
+}
+
+/* Text & Button OVERLAY (no card bg) */
+.project-details {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: 0.9rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 2;                         /* above image/overlay */
+  color: #fff;
+  pointer-events: none;               /* allow button to handle clicks itself */
+}
+.project-details > * { pointer-events: auto; } /* re-enable for children */
+
+.project-name {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0,0,0,.6);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.project-url {
+  color: var(--muted);
+  font-size: 0.9rem;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-decoration: none;
+  text-shadow: 0 1px 2px rgba(0,0,0,.5);
+  transition: color 0.2s ease;
+}
+.project-url:hover { color: #e6ffff; }
+
+/* Delete button styled for dark overlay */
+.delete-project-btn {
+  align-self: flex-start;
+  background: rgba(255, 82, 82, 0.18);
+  color: #ffd6d6;
+  border: 1px solid rgba(255, 82, 82, 0.9);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+  backdrop-filter: blur(2px);
+}
+.delete-project-btn:hover {
+  background: rgba(255, 82, 82, 0.28);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: var(--muted);
+  font-style: italic;
+  background: var(--card-bg);
+  border-radius: 12px;
+}
+
+/* Loading Spinner */
+.projects-loading-spinner, .saving-spinner {
+  border: 3px solid rgba(0, 255, 255, 0.2);
+  border-radius: 50%;
+  border-top: 3px solid var(--accent);
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 2rem auto;
+}
+.saving-spinner { display: inline-block; vertical-align: middle; width: 16px; height: 16px; margin-right: 8px; }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
