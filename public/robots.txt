@@ -1,0 +1,8 @@
+# Robots.txt for https://santoshthapa0.com.np
+# Allow all search engines to crawl and index everything
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://santoshthapa0.com.np/sitemap.xml
