@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import api from "../../api/axiosClient.js";
+import api, { fetchWithRetry } from "../../api/axiosClient.js";
+
 import Counter from "../../components/Counter.jsx";
 import ContactMe from "../../components/ContactMe.jsx";
 import {
@@ -27,6 +28,21 @@ export default function Home() {
   const [projects, setProjects] = useState([]);
   const [skills, setSkills] = useState([]);
   const [contact, setContact] = useState({});
+  
+useEffect(() => {
+  let active = true;
+  (async () => {
+    try {
+      const res = await fetchWithRetry(() => api.get("/your-endpoint"));
+      if (active) setData(res.data);
+    } catch (e) {
+      if (active) setErr(e?.message || "Failed to load");
+    } finally {
+      if (active) setLoading(false);
+    }
+  })();
+  return () => { active = false; };
+}, []);
 
   // Rotate role text
   const [roleIndex, setRoleIndex] = useState(0);
