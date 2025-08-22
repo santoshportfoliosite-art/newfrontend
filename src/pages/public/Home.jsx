@@ -28,12 +28,17 @@ export default function Home() {
   const [projects, setProjects] = useState([]);
   const [skills, setSkills] = useState([]);
   const [contact, setContact] = useState({});
+
+  /** 🔧 Added to satisfy setData / setErr / setLoading used below */
+  const [data, setData] = useState(null);
+  const [err, setErr] = useState(null);
+  const [loading, setLoading] = useState(true);
   
 useEffect(() => {
   let active = true;
   (async () => {
     try {
-      const res = await fetchWithRetry(() => api.get("/your-endpoint"));
+      const res = await fetchWithRetry(() => api.get("/"));
       if (active) setData(res.data);
     } catch (e) {
       if (active) setErr(e?.message || "Failed to load");
