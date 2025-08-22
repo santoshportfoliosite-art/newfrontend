@@ -25,7 +25,7 @@ export function AuthProvider({ children }) {
     const admin = data?.data?.admin || null;
     const token = data?.data?.token || null;
 
-    // Save token for cross-origin fallback (Bearer)
+   
     if (token) localStorage.setItem("token", token);
 
     setUser(admin);
@@ -33,7 +33,7 @@ export function AuthProvider({ children }) {
   };
 
   const logout = async () => {
-    // Clear both cookie session (if present) and localStorage token
+
     localStorage.removeItem("token");
     try { await api.post("/auth/logout"); } catch (_) {}
     setUser(null);

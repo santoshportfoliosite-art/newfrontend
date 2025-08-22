@@ -126,7 +126,7 @@ export default function ProjectSetup() {
                   {project.url}
                 </a>
 
-                {/* same handler; ensure class name matches CSS */}
+                {}
                 <div className="project-actions">
                   <button
                     className="delete-project-btn"

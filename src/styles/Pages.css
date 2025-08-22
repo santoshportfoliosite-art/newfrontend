@@ -1,6 +1,6 @@
 /* ====== Public Pages (responsive) ====== */
 
-/* Section headings */
+
 .section-title {
   font-weight: 800;
   letter-spacing: .3px;
@@ -18,7 +18,7 @@
   opacity: .7;
 }
 
-/* Media frames inside cards (images, covers) */
+
 .media-frame {
   width: 100%;
   aspect-ratio: 16/10;
@@ -33,7 +33,7 @@
   object-fit: cover;
 }
 
-/* Stats / counters */
+
 .stat-badge {
   display: inline-flex;
   align-items: center;
@@ -44,7 +44,7 @@
   background: rgba(17, 24, 39, .6);
 }
 
-/* Projects grid */
+
 .project-grid {
   display: grid;
   gap: var(--gap);
@@ -61,7 +61,7 @@
   overflow-wrap: anywhere;
 }
 
-/* Skills grid */
+
 .skill-grid {
   display: grid;
   gap: var(--gap);
@@ -73,7 +73,7 @@
   margin-top: 8px;
 }
 
-/* Education list */
+
 .edu-list {
   display: grid;
   gap: var(--gap);
@@ -93,7 +93,7 @@
   .edu-item .year { justify-self: start; }
 }
 
-/* Contact blocks */
+
 .contact-grid {
   display: grid;
   gap: var(--gap);
@@ -105,7 +105,7 @@
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
-/* Hero layout helpers (optional; Home sections already responsive via globals) */
+
 .hero {
   display: grid;
   gap: var(--gap);
@@ -115,7 +115,7 @@
   .hero { grid-template-columns: 1fr; }
 }
 
-/* ContactMe form spacing */
+
 .contactme form .row {
   display: grid;
   gap: var(--gap);
@@ -125,7 +125,7 @@
   .contactme form .row { grid-template-columns: 1fr; }
 }
 
-/* Simple fade-in utility */
+
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(6px); }
   to   { opacity: 1; transform: translateY(0); }

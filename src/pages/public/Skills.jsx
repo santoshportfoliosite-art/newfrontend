@@ -12,7 +12,7 @@ export default function Skills() {
     api.get("/skills").then(({data}) => setItems(data?.data || [])); 
   }, []);
 
-  /* Floating particles like your other pages (added) */
+
   useEffect(() => {
     const container = particlesRef.current;
     if (!container) return;
@@ -29,11 +29,11 @@ export default function Skills() {
       const p = document.createElement("div");
       p.className = "skills-particle";
 
-      // position across the width; let the keyframes move through viewport
+
       p.style.left = `${Math.random() * 100}%`;
       p.style.top = `0`;
 
-      const size = Math.random() * 3 + 1; // 1–4px
+      const size = Math.random() * 3 + 1; 
       p.style.width = `${size}px`;
       p.style.height = `${size}px`;
 
@@ -47,7 +47,7 @@ export default function Skills() {
     }
   }, []);
 
-  /* Reveal-in + progress bars */
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -55,7 +55,7 @@ export default function Skills() {
           if (entry.isIntersecting) {
             entry.target.classList.add("visible");
 
-            // Animate progress bars – respect provided data-level
+ 
             const progressBar = entry.target.querySelector(".skill-progress-bar");
             if (progressBar) {
               const provided = entry.target.getAttribute("data-level");
@@ -71,7 +71,7 @@ export default function Skills() {
     if (skillsRef.current) {
       const cards = skillsRef.current.querySelectorAll(".skill-card");
       cards.forEach(card => {
-        // Only set demo level if none provided
+ 
         if (!card.getAttribute("data-level")) {
           card.setAttribute("data-level", String(Math.floor(Math.random() * 30) + 70));
         }
@@ -87,7 +87,7 @@ export default function Skills() {
       {/* Full-screen floating particles (new) */}
       <div className="skills-particles" ref={particlesRef} />
 
-      {/* Animated Background Elements (kept) */}
+     
       <div className="skills-bg-element"></div>
       <div className="skills-bg-element"></div>
       

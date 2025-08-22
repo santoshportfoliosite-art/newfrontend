@@ -44,7 +44,7 @@ useEffect(() => {
   return () => { active = false; };
 }, []);
 
-  // Rotate role text
+
   const [roleIndex, setRoleIndex] = useState(0);
   useEffect(() => {
     const id = setInterval(() => setRoleIndex((i) => (i + 1) % ROLES.length), 1800);
@@ -71,7 +71,7 @@ useEffect(() => {
 
   const hasCV = Boolean(cv);
 
-  // Contact links
+
   const telHref = contact?.mobile
     ? `tel:${String(contact.mobile).replace(/[^\d+]/g, "")}`
     : null;
@@ -90,11 +90,11 @@ useEffect(() => {
 
   return (
     <div className="home-container">
-      {/* Animated Background Elements */}
+    
       <div className="home-bg-element"></div>
       <div className="home-bg-element"></div>
 
-      {/* Hero Section */}
+   
       <motion.section 
         className="hero-section"
         initial={{ opacity: 0, y: 20 }}

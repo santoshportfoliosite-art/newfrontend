@@ -19,38 +19,38 @@ export default function Projects() {
     const particleCount = 100;
     container.innerHTML = "";
 
-    // one <style> with all keyframes to avoid insertRule/CSP issues
+
     const styleEl = document.createElement("style");
     let cssBuffer = "";
 
-    // Make sure the container itself is present and sized
-    // (already handled by CSS .projects-particles)
+    
+   
     for (let i = 0; i < particleCount; i++) {
       const particle = document.createElement("div");
       particle.className = "project-particle";
 
-      // Random size and color (soft pastel)
-      const size = Math.random() * 3 + 1; // 1px - 4px
+      
+      const size = Math.random() * 3 + 1; 
       particle.style.width = `${size}px`;
       particle.style.height = `${size}px`;
       const hue = Math.floor(Math.random() * 360);
       const alpha = 0.7;
       particle.style.background = `hsla(${hue} 90% 70% / ${alpha})`;
 
-      // Random horizontal start + slight horizontal drift
-      const startXPercent = Math.random() * 100; // 0-100%
-      const driftVW = (Math.random() * 8 - 4).toFixed(2); // -4vw to +4vw
+      
+      const startXPercent = Math.random() * 100; 
+      const driftVW = (Math.random() * 8 - 4).toFixed(2); 
 
-      // Position in container
+
       particle.style.left = `${startXPercent}%`;
-      particle.style.top = `0`; // IMPORTANT: start relative to top edge
+      particle.style.top = `0`; 
 
-      // Unique animation per particle
+   
       const anim = `particle-float-${i}`;
-      const duration = (Math.random() * 10 + 10).toFixed(2); // 10s - 20s
+      const duration = (Math.random() * 10 + 10).toFixed(2); 
       const delay = (Math.random() * 5).toFixed(2) + "s";
 
-      // Use vh/vw so movement is relative to viewport, not element size
+  
       cssBuffer += `
         @keyframes ${anim} {
           0%   { transform: translateY(110vh) translateX(0); opacity: 0; }

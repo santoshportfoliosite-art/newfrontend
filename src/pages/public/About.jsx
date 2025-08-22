@@ -18,31 +18,31 @@ export default function About() {
     const starCount = 100;
     container.innerHTML = '';
 
-    // Create stars (CSS provides keyframes)
+ 
     for (let i = 0; i < starCount; i++) {
       const star = document.createElement('div');
       star.className = 'star';
 
-      // Position & size
+
       star.style.left = `${Math.random() * 100}%`;
       star.style.top = `${Math.random() * 100}%`;
-      const size = Math.random() * 3 + 1; // 1px–4px
+      const size = Math.random() * 3 + 1; 
       star.style.width = `${size}px`;
       star.style.height = `${size}px`;
 
-      // Colorful (soft pastel)
+
       const hue = Math.floor(Math.random() * 360);
       star.style.background = `hsla(${hue} 90% 70% / 0.9)`;
 
-      // Twinkle intensity & duration
+
       star.style.setProperty('--opacity', (Math.random() * 0.7 + 0.3).toFixed(2));
       star.style.setProperty('--duration', `${(Math.random() * 3 + 2).toFixed(2)}s`);
 
-      // Gentle drift using viewport-relative offsets
+
       star.style.setProperty('--driftX', `${(Math.random() * 10 - 5).toFixed(2)}vw`);
       star.style.setProperty('--driftY', `${(Math.random() * 10 - 5).toFixed(2)}vh`);
 
-      // Staggered start
+
       star.style.animationDelay = `${(Math.random() * 5).toFixed(2)}s`;
 
       container.appendChild(star);
@@ -55,7 +55,7 @@ export default function About() {
 
   return (
     <div className="about-container">
-      {/* Full-screen stars */}
+ 
       <div className="stars-container" ref={starsRef} />
       
       <div className="about-content">

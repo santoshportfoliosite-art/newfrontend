@@ -5,34 +5,34 @@
   padding: 2rem clamp(1rem, 5vw, 4rem);
   position: relative;
   overflow: hidden;
-  z-index: 2; /* content above stars */
+  z-index: 2; 
 }
 
 /* ========== Stars Background (full screen) ========== */
 .stars-container {
   position: fixed;
-  inset: 0;             /* top/right/bottom/left: 0 */
+  inset: 0;            
   width: 100vw;
   height: 100vh;
-  z-index: 1;           /* stars above background, below content */
-  pointer-events: none; /* don't block clicks */
+  z-index: 1;           
+  pointer-events: none; 
   overflow: hidden;
 }
 
 .star {
   position: absolute;
   border-radius: 50%;
-  opacity: 0.1; /* base; twinkle raises via --opacity */
+  opacity: 0.1; 
   will-change: transform, opacity;
-  /* Two animations: twinkle and gentle drift */
+  
   animation:
     star-twinkle var(--duration, 3s) ease-in-out infinite alternate,
     star-drift calc(var(--duration, 3s) * 6) linear infinite;
-  /* slight glow */
+
   box-shadow: 0 0 6px currentColor;
 }
 
-/* Twinkle + Drift keyframes */
+
 @keyframes star-twinkle {
   0%   { opacity: 0.1; transform: scale(0.9); }
   50%  { opacity: var(--opacity, 0.8); transform: scale(1); }
@@ -43,13 +43,13 @@
   100% { transform: translate(var(--driftX, 0), var(--driftY, 0)); }
 }
 
-/* ========== Content Layout ========== */
+
 .about-content {
   display: flex;
   align-items: center;
   gap: 4rem;
   position: relative;
-  z-index: 2; /* ensure above stars */
+  z-index: 2;
 }
 
 .about-image-section {
@@ -62,7 +62,7 @@
   flex: 1;
 }
 
-/* Image Style */
+
 .profile-image-wrapper {
   width: 320px;
   height: 320px;
@@ -85,7 +85,7 @@
   border: 2px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Text Styling */
+
 .about-title {
   font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 800;
@@ -103,7 +103,7 @@
   position: relative;
 }
 
-/* ========== Heading shimmer + underline (reusable) ========== */
+
 .heading-shimmer {
   background-size: 200% 100%;
   animation: aboutTitleShimmer 4s linear infinite;
@@ -131,8 +131,8 @@
   to { transform: scaleX(1); }
 }
 
-/* ========== Reusable Progress Bar (optional) ========== */
-/* Example markup:
+
+/*
    <div class="about-progress is-visible">
      <div class="about-progress-bar" style="--to: 80%"></div>
    </div>
@@ -158,7 +158,7 @@
   overflow: hidden;
 }
 
-/* moving sheen */
+
 .about-progress-bar::after {
   content: "";
   position: absolute;
@@ -180,12 +180,11 @@
   color: rgba(255,255,255,0.85);
 }
 
-/* Trigger fill when visible (if you use an IO to add .is-visible) */
+
 .about-progress.is-visible .about-progress-bar {
   width: var(--to, 0%);
 }
 
-/* ========== Responsive Layout ========== */
 @media (max-width: 768px) {
   .about-content {
     flex-direction: column;
@@ -206,7 +205,7 @@
   }
 }
 
-/* ========== Reduced motion ========== */
+
 @media (prefers-reduced-motion: reduce) {
   .heading-shimmer,
   .heading-underline::after,

@@ -20,7 +20,7 @@ api.interceptors.request.use((config) => {
     config.headers.Authorization = `Bearer ${token}`;
   }
 
-  // [REMOVED]: setting Cache-Control/Pragma/Expires on the REQUEST (caused CORS preflight)
+  
   return config;
 });
 

@@ -22,7 +22,7 @@ export default function Contact() {
     api.get("/contact").then(({ data }) => setC(data?.data || {}));
   }, []);
 
-  // Particles (colorful dots floating upward)
+
   useEffect(() => {
     const container = particlesRef.current;
     if (!container) return;
@@ -51,7 +51,7 @@ export default function Contact() {
     }
   }, []);
 
-  // Reveal cards on scroll (contact grid + social grid)
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       entries => {
@@ -77,17 +77,17 @@ export default function Contact() {
     return () => observer.disconnect();
   }, [c]);
 
-  // Normalize URLs so social sites actually work/show correctly
+
   const normalizeUrl = (u) => {
     if (!u || typeof u !== "string") return null;
     const trimmed = u.trim();
     if (!trimmed) return null;
     if (/^https?:\/\//i.test(trimmed)) return trimmed;
-    // add protocol if user saved "facebook.com/..." etc.
+
     return `https://${trimmed}`;
   };
 
-  // Build safe links
+
   const telHref = c?.mobile
     ? `tel:${String(c.mobile).replace(/[^\d+]/g, "")}`
     : null;
@@ -104,33 +104,33 @@ export default function Contact() {
       )}&body=${encodeURIComponent("Hi Santosh,\n\nI saw your portfolio and ...")}`
     : null;
 
-  // Social links (support common variants and normalize)
+
   const socialLinks = [
     { key: "facebook", icon: <FaFacebook />, label: "Facebook", href: normalizeUrl(c?.facebook || c?.fb || c?.fbPage) },
     { key: "instagram", icon: <FaInstagram />, label: "Instagram", href: normalizeUrl(c?.instagram) },
     { key: "youtube", icon: <FaYoutube />, label: "YouTube", href: normalizeUrl(c?.youtube) },
     { key: "tiktok", icon: <FaTiktok />, label: "TikTok", href: normalizeUrl(c?.tiktok) },
-    // Keep a separate Facebook Page if provided and distinct
+
     ...(c?.fbPage && normalizeUrl(c.fbPage) && normalizeUrl(c.fbPage) !== normalizeUrl(c.facebook)
       ? [{ key: "fbPage", icon: <FaFacebook />, label: "Facebook Page", href: normalizeUrl(c.fbPage) }]
       : [])
-  ].filter(s => !!s.href); // only render valid links
+  ].filter(s => !!s.href); 
 
   return (
     <section className="contact-container">
-      {/* Full-screen Particles */}
+
       <div className="contact-particles" ref={particlesRef} />
 
-      {/* Animated Background Elements (your original blobs) */}
+
       <div className="contact-bg-element"></div>
       <div className="contact-bg-element"></div>
       
-      {/* Contact Header */}
+
       <div className="contact-header">
         <h1 className="contact-title">Contact Details</h1>
       </div>
       
-      {/* Contact Methods */}
+
       <div className="contact-grid" ref={contactRef}>
         {telHref ? (
           <div className="contact-card">
@@ -181,7 +181,7 @@ export default function Contact() {
         )}
       </div>
       
-      {/* Social Media */}
+   
       <div className="social-section">
         <h2 className="social-title">Social Sites</h2>
         <div className="contact-grid" ref={socialRef}>
